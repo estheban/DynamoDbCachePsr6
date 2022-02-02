@@ -25,7 +25,7 @@ final class JsonItemEncoder implements CacheItemEncoderInterface
         // not in required extensions, users that use this encoder should check
         // for themselves if the json extension is loaded
 
-        /** @noinspection */
+        /** @phpstan-ignore-next-line */
         $json = json_encode($input, $this->encodeFlags, $this->depth);
         if ($json === false) {
             throw new RuntimeException('JSON Error: ' . json_last_error_msg());
@@ -36,6 +36,7 @@ final class JsonItemEncoder implements CacheItemEncoderInterface
 
     public function decode(string $input)
     {
+        /** @phpstan-ignore-next-line */
         return json_decode($input, true, $this->depth, $this->decodeFlags);
     }
 }

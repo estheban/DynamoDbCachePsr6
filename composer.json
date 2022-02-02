@@ -22,7 +22,7 @@
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.16",
-    "phpstan/phpstan": "^0.12.43",
+    "phpstan/phpstan": "^1.4",
     "phpunit/phpunit": "^9.3",
     "ext-json": "*"
   },
@@ -34,6 +34,6 @@
     "fixer": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix src --verbose",
     "phpstan": "phpstan analyse --level max src",
     "phpunit": "phpunit",
-    "test": "composer fixer -- --dry-run && composer phpunit"
+    "test": "composer fixer -- --dry-run && composer phpstan && composer phpunit"
   }
 }

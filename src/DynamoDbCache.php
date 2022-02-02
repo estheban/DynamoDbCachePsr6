@@ -429,7 +429,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
                 }
 
                 return $default;
-            }, $this->getItems($this->iterableToArray($keys)))
+            }, $this->iterableToArray($this->getItems($this->iterableToArray($keys))))
         );
         assert(is_array($result));
 
@@ -497,8 +497,6 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
 
     /**
      * @param iterable<mixed,mixed> $iterable
-     *
-     * @return array
      */
     private function iterableToArray(iterable $iterable): array
     {
