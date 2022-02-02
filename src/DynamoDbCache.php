@@ -117,7 +117,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      *
      * @return DynamoCacheItem
      */
-    public function getItem($key)
+    public function getItem($key):CacheItemInterface
     {
         if ($exception = $this->getExceptionForInvalidKey($this->getKey($key))) {
             throw $exception;
@@ -161,7 +161,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      *
      * @return DynamoCacheItem[]
      */
-    public function getItems(array $keys = [])
+    public function getItems(array $keys = []): iterable
     {
         $keys = array_map(function ($key) {
             if ($exception = $this->getExceptionForInvalidKey($this->getKey($key))) {
@@ -236,7 +236,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      *
      * @return bool
      */
-    public function hasItem($key)
+    public function hasItem($key): bool
     {
         return $this->getItem($key)->isHit();
     }
@@ -244,7 +244,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
     /**
      * @return false
      */
-    public function clear()
+    public function clear(): bool
     {
         return false;
     }
@@ -257,7 +257,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      *
      * @return bool
      */
-    public function deleteItem($key)
+    public function deleteItem($key): bool
     {
         if ($key instanceof DynamoCacheItem) {
             $key = $key->getKey();
@@ -292,7 +292,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      *
      * @return bool
      */
-    public function deleteItems(array $keys)
+    public function deleteItems(array $keys): bool
     {
         $keys = array_map(function ($key) {
             if ($exception = $this->getExceptionForInvalidKey($this->getKey($key))) {
@@ -326,7 +326,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      *
      * @return bool
      */
-    public function save(CacheItemInterface $item)
+    public function save(CacheItemInterface $item): bool
     {
         $item = $this->converter->convert($item);
         if ($exception = $this->getExceptionForInvalidKey($item->getKey())) {
@@ -367,7 +367,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      *
      * @return bool
      */
-    public function saveDeferred(CacheItemInterface $item)
+    public function saveDeferred(CacheItemInterface $item): bool
     {
         if ($exception = $this->getExceptionForInvalidKey($item->getKey())) {
             throw $exception;
@@ -384,7 +384,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      *
      * @return bool
      */
-    public function commit()
+    public function commit(): bool
     {
         $result = true;
         foreach ($this->deferred as $key => $item) {
