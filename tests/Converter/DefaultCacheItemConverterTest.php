@@ -59,32 +59,32 @@ final class DefaultCacheItemConverterTest extends TestCase
     private function createBasicCacheItem()
     {
         return new class implements CacheItemInterface {
-            public function getKey()
+            public function getKey(): string
             {
                 return 'test';
             }
 
-            public function get()
+            public function get(): string
             {
                 return 'test';
             }
 
-            public function isHit()
+            public function isHit(): bool
             {
                 return true;
             }
 
-            public function set($value)
+            public function set(mixed $value): static
             {
                 return $this;
             }
 
-            public function expiresAt($expiration)
+            public function expiresAt(?\DateTimeInterface $expiration): static
             {
                 return $this;
             }
 
-            public function expiresAfter($time)
+            public function expiresAfter(int|\DateInterval|null $time): static
             {
                 return $this;
             }

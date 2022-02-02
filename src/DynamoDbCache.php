@@ -24,55 +24,28 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
 {
     private const RESERVED_CHARACTERS = '{}()/\@:';
 
-    /**
-     * @var string
-     */
-    private $tableName;
+    private string $tableName;
 
-    /**
-     * @var DynamoDbClient
-     */
-    private $client;
+    private DynamoDbClient $client;
 
-    /**
-     * @var string
-     */
-    private $primaryField;
+    private string $primaryField;
 
-    /**
-     * @var string
-     */
-    private $ttlField;
+    private string$ttlField;
 
-    /**
-     * @var string
-     */
-    private $valueField;
+    private string $valueField;
 
     /**
      * @var DynamoCacheItem[]
      */
-    private $deferred = [];
+    private array $deferred = [];
 
-    /**
-     * @var ClockInterface
-     */
-    private $clock;
+    private ClockInterface $clock;
 
-    /**
-     * @var CacheItemConverterRegistry
-     */
-    private $converter;
+    private CacheItemConverterRegistry $converter;
 
-    /**
-     * @var CacheItemEncoderInterface
-     */
-    private $encoder;
+    private CacheItemEncoderInterface $encoder;
 
-    /**
-     * @var string|null
-     */
-    private $prefix;
+    private string|null $prefix;
 
     public function __construct(
         string $tableName,
@@ -111,13 +84,9 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
     }
 
     /**
-     * @param string $key
-     *
      * @throws InvalidArgumentException
-     *
-     * @return DynamoCacheItem
      */
-    public function getItem($key):CacheItemInterface
+    public function getItem(string $key):CacheItemInterface
     {
         if ($exception = $this->getExceptionForInvalidKey($this->getKey($key))) {
             throw $exception;
@@ -230,13 +199,12 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
     }
 
     /**
-     * @param string $key
-     *
      * @throws InvalidArgumentException
      *
      * @return bool
+     *
      */
-    public function hasItem($key): bool
+    public function hasItem(string $key): bool
     {
         return $this->getItem($key)->isHit();
     }
@@ -404,10 +372,8 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      * @param mixed  $default
      *
      * @throws InvalidArgumentException
-     *
-     * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $default = null): mixed
     {
         $item = $this->getItem($key);
         if (!$item->isHit()) {
@@ -423,10 +389,8 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      * @param int|DateInterval|null $ttl
      *
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
-    public function set($key, $value, $ttl = null)
+    public function set($key, $value, $ttl = null): bool
     {
         $item = $this->getItem($key);
         if ($ttl !== null) {
@@ -441,10 +405,8 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      * @param string $key
      *
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
-    public function delete($key)
+    public function delete($key): bool
     {
         return $this->deleteItem($key);
     }
@@ -512,10 +474,8 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
      * @param string $key
      *
      * @throws InvalidArgumentException
-     *
-     * @return bool
      */
-    public function has($key)
+    public function has($key): bool
     {
         return $this->hasItem($key);
     }
@@ -538,7 +498,7 @@ final class DynamoDbCache implements CacheItemPoolInterface, CacheInterface
     /**
      * @param iterable<mixed,mixed> $iterable
      *
-     * @return array<mixed,mixed>
+     * @return array
      */
     private function iterableToArray(iterable $iterable): array
     {

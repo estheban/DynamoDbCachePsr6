@@ -11,35 +11,17 @@ use Rikudou\DynamoDbCache\Exception\InvalidArgumentException;
 
 final class DynamoCacheItem implements CacheItemInterface
 {
-    /**
-     * @var string
-     */
-    private $key;
+    private string $key;
 
-    /**
-     * @var bool
-     */
-    private $isHit;
+    private bool $isHit;
 
-    /**
-     * @var DateTimeInterface|null
-     */
-    private $expiresAt;
+    private ?DateTimeInterface $expiresAt;
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
-    /**
-     * @var ClockInterface
-     */
-    private $clock;
+    private ClockInterface $clock;
 
-    /**
-     * @var CacheItemEncoderInterface
-     */
-    private $encoder;
+    private CacheItemEncoderInterface $encoder;
 
     /**
      * @param string                    $key
@@ -68,42 +50,40 @@ final class DynamoCacheItem implements CacheItemInterface
         $this->set($value);
     }
 
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
 
-    public function get()
+    public function get(): mixed
     {
         return $this->encoder->decode($this->value);
     }
 
-    public function isHit()
+    public function isHit(): bool
     {
         return $this->isHit && ($this->clock->now() < $this->expiresAt || $this->expiresAt === null);
     }
 
-    public function set($value)
+    public function set($value): static
     {
         $this->value = $this->encoder->encode($value);
 
         return $this;
     }
 
-    public function expiresAt($expiration)
+    public function expiresAt(?DateTimeInterface $expiration): static
     {
         if ($expiration === null) {
             $this->expiresAt = null;
-        } elseif ($expiration instanceof DateTimeInterface) {
-            $this->expiresAt = $expiration;
         } else {
-            throw new InvalidArgumentException('The expiration must be null or instance of ' . DateTimeInterface::class);
+            $this->expiresAt = $expiration;
         }
 
         return $this;
     }
 
-    public function expiresAfter($time)
+    public function expiresAfter(int|DateInterval|null $time): static
     {
         if ($time === null) {
             $this->expiresAt = null;

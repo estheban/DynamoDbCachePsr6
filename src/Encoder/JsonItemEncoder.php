@@ -6,20 +6,11 @@ use RuntimeException;
 
 final class JsonItemEncoder implements CacheItemEncoderInterface
 {
-    /**
-     * @var int
-     */
-    private $encodeFlags;
+    private int $encodeFlags;
 
-    /**
-     * @var int
-     */
-    private $depth;
+    private int $depth;
 
-    /**
-     * @var int
-     */
-    private $decodeFlags;
+    private int $decodeFlags;
 
     public function __construct(int $encodeFlags = 0, int $decodeFlags = 0, int $depth = 512)
     {
@@ -34,10 +25,9 @@ final class JsonItemEncoder implements CacheItemEncoderInterface
         // not in required extensions, users that use this encoder should check
         // for themselves if the json extension is loaded
 
-        /** @noinspection PhpComposerExtensionStubsInspection */
+        /** @noinspection */
         $json = json_encode($input, $this->encodeFlags, $this->depth);
         if ($json === false) {
-            /** @noinspection PhpComposerExtensionStubsInspection */
             throw new RuntimeException('JSON Error: ' . json_last_error_msg());
         }
 
@@ -46,7 +36,6 @@ final class JsonItemEncoder implements CacheItemEncoderInterface
 
     public function decode(string $input)
     {
-        /** @noinspection PhpComposerExtensionStubsInspection */
         return json_decode($input, true, $this->depth, $this->decodeFlags);
     }
 }
